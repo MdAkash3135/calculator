@@ -338,6 +338,22 @@ function calculator(button){
             let POWER_SEARCH_RESULT = search(data.formula, POWER)
             let FACTORIAL_SEARCH_RESULT = search(data.formula, FACTORIAL)
             console.log(data.formula, POWER_SEARCH_RESULT, FACTORIAL_SEARCH_RESULT)
+
+            const BASES = powerGetter(data.formula, POWER_SEARCH_RESULT)
+            for (let i = 0; i <BASES.length; i++)
+            {
+                base = BASES[i]
+                console.log(formula_str)
+                target_replace = base + 'POWER' + '('
+                console.log(target_replace)
+                console.log(base)
+                replace_element = ('Math.pow(' + base + ',') 
+                console.log(replace_element)
+                formula_str = formula_str.replace(target_replace, replace_element)
+            }
+
+
+            console.log('this is formulaaaaaaaaaaaaaaaaaaaa string ', formula_str)
             let result;
             try {
                 result = eval(formula_str)
@@ -346,7 +362,7 @@ function calculator(button){
                 if ( error instanceof SyntaxError)
                 {
                     result = "Syntax Error!"
-                    updateOutputOperation(result)
+                    updateOutputResult(result)
                     return
                 }
             }
@@ -355,6 +371,7 @@ function calculator(button){
             data.operation = [result]
             data.formula = [result]
             updateOutputResult(result)
+            return
             
         }
  //   console.log(data.operation)
@@ -394,7 +411,6 @@ function search(array, keyword){
     array.forEach( (element, index) => {
         if(element == keyword) search_result.push(index)
     })
-
     return search_result
 
 }
@@ -406,4 +422,31 @@ function factorial(num){
         if (res == Infinity) return Infinity
     }
     return res
+}
+
+function powerGetter(formula, power_indexes)
+{   
+    console.log('power has called ')
+    console.log(formula, power_indexes)
+    console.log(typeof formula, typeof power_indexes)
+    all_bases = []
+    for (let i = 0; i < power_indexes.length; i++)
+    {
+        let temp_base_index = power_indexes[i] - 1
+        temp_base = []
+        let parenthesis = 0
+        while(temp_base_index >= 0)
+        {
+            if (formula[temp_base_index] == ')') parenthesis ++
+            else if (formula[temp_base_index] == '(') parenthesis --
+            if (OPERATORS.includes(formula[temp_base_index]) && parenthesis == 0) break
+            temp_base.unshift(formula[temp_base_index])
+            temp_base_index--
+        }
+        all_bases.push(temp_base.join(''))
+
+        
+    }
+    console.log('this is all power bases', all_bases )
+    return all_bases
 }
