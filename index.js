@@ -398,3 +398,12 @@ function search(array, keyword){
     return search_result
 
 }
+function factorial(num){
+    let res = 1;
+    for (let i = 1; i <= num; i++)
+    {
+        res = res * i
+        if (res == Infinity) return Infinity
+    }
+    return res
+}
